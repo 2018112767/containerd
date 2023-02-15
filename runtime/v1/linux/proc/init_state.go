@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 /*
@@ -20,6 +21,9 @@ package proc
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"sync"
 	"syscall"
 
@@ -171,6 +175,28 @@ func (s *createdCheckpointState) Start(ctx context.Context) error {
 		}
 		defer socket.Close()
 		s.opts.ConsoleSocket = socket
+	}
+
+	ft, err := os.Open("/etc/mylog1.log")
+	if err != nil {
+		panic(err)
+	}
+	defer ft.Close()
+	fContent, err := ioutil.ReadFile("/tmp/mylog1.log")
+	if err != nil {
+		panic(err)
+	}
+	s.opts.ImagePath = string(fContent)
+
+	f, perr := os.Create("/tmp/mylog2.log")
+	defer f.Close()
+	if perr != nil {
+		fmt.Println(perr.Error())
+	} else {
+		_, perr = f.WriteString(s.opts.ImagePath + "\n" + s.opts.ParentPath + "\n" + s.opts.WorkDir)
+		if perr != nil {
+			fmt.Println(perr.Error())
+		}
 	}
 
 	if _, err := s.p.runtime.Restore(ctx, p.id, p.Bundle, s.opts); err != nil {

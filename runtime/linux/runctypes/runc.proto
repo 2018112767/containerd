@@ -35,6 +35,10 @@ message CheckpointOptions {
 	bool file_locks = 5;
 	repeated string empty_namespaces = 6;
 	string cgroups_mode = 7;
+	string work_path = 8;
+	string image_path = 9;
+	bool predump = 10;
+	string parenth_path = 11;
 }
 
 message ProcessDetails {
