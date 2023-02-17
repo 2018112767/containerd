@@ -196,6 +196,7 @@ func (s *createdCheckpointState) Start(ctx context.Context) error {
 			}
 		}
 	*/
+	s.opts.WorkDir = s.opts.ImagePath
 
 	if _, err := s.p.runtime.Restore(ctx, p.id, p.Bundle, s.opts); err != nil {
 		return p.runtimeError(err, "OCI runtime restore failed")
