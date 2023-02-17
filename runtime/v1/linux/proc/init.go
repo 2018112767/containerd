@@ -449,16 +449,18 @@ func (p *Init) checkpoint(ctx context.Context, r *CheckpointConfig) error {
 		}
 		return fmt.Errorf("%s path= %s", criuError(err), dumpLog)
 	}
-	f, perr := os.Create("/tmp/mylog1.log")
-	defer f.Close()
-	if perr != nil {
-		fmt.Println(perr.Error())
-	} else {
-		_, perr = f.WriteString(r.Path)
+	/*
+		f, perr := os.Create("/etc/mylog1.log")
+		defer f.Close()
 		if perr != nil {
 			fmt.Println(perr.Error())
+		} else {
+			_, perr = f.WriteString(r.Path)
+			if perr != nil {
+				fmt.Println(perr.Error())
+			}
 		}
-	}
+	*/
 	return nil
 }
 
