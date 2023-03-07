@@ -445,6 +445,8 @@ type CheckpointOpts struct {
 	// EmptyNamespaces creates a namespace for the container but does not save its properties
 	// Provide the namespaces you wish to be checkpointed without their settings on restore
 	EmptyNamespaces []string
+	//lazy
+	LazyPages bool
 }
 
 type CgroupMode string
@@ -485,6 +487,9 @@ func (o *CheckpointOpts) args() (out []string) {
 	}
 	for _, ns := range o.EmptyNamespaces {
 		out = append(out, "--empty-ns", ns)
+	}
+	if o.LazyPages {
+		out = append(out, "--lazy-pages")
 	}
 	return out
 }

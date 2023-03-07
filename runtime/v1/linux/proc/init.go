@@ -116,6 +116,7 @@ func (p *Init) Create(ctx context.Context, r *CreateConfig) error {
 	var (
 		err    error
 		socket *runc.Socket
+		ok     bool
 	)
 
 	if r.Terminal {
@@ -145,6 +146,15 @@ func (p *Init) Create(ctx context.Context, r *CreateConfig) error {
 			NoPivot:     p.NoPivotRoot,
 			Detach:      true,
 			NoSubreaper: true,
+		}
+		if _, ok = r.CheckpointOpts["LazyPages"]; ok {
+			opts.LazyPages = true
+		}
+		if _, ok = r.CheckpointOpts["OpenTcp"]; ok {
+			opts.AllowOpenTCP = true
+		}
+		if _, ok = r.CheckpointOpts["Terminal"]; ok {
+			opts.AllowTerminal = true
 		}
 		p.initState = &createdCheckpointState{
 			p:    p,
@@ -442,6 +452,7 @@ func (p *Init) checkpoint(ctx context.Context, r *CheckpointConfig) error {
 		FileLocks:                r.FileLocks,
 		EmptyNamespaces:          r.EmptyNamespaces,
 		ParentPath:               r.Parentpath,
+		LazyPages:                r.LazyPages,
 	}, actions...); err != nil {
 		dumpLog := filepath.Join(p.Bundle, "criu-dump.log")
 		if cerr := copyFile(dumpLog, filepath.Join(work, "dump.log")); cerr != nil {

@@ -195,7 +195,7 @@ func (s *shim) Create(ctx context.Context, opts runtime.CreateOpts) (runtime.Tas
 		Stdout:     opts.IO.Stdout,
 		Stderr:     opts.IO.Stderr,
 		Terminal:   opts.IO.Terminal,
-		Checkpoint: opts.Checkpoint,
+		Checkpoint: opts.Checkpoint.Annotations["Path"],
 		Options:    topts,
 	}
 	for _, m := range opts.Rootfs {

@@ -1,3 +1,4 @@
+//go:build linux
 // +build linux
 
 /*
@@ -229,15 +230,16 @@ func (r *Runtime) Create(ctx context.Context, id string, opts runtime.CreateOpts
 		rt = ropts.Runtime
 	}
 	sopts := &shim.CreateTaskRequest{
-		ID:         id,
-		Bundle:     bundle.path,
-		Runtime:    rt,
-		Stdin:      opts.IO.Stdin,
-		Stdout:     opts.IO.Stdout,
-		Stderr:     opts.IO.Stderr,
-		Terminal:   opts.IO.Terminal,
-		Checkpoint: opts.Checkpoint,
-		Options:    opts.TaskOptions,
+		ID:             id,
+		Bundle:         bundle.path,
+		Runtime:        rt,
+		Stdin:          opts.IO.Stdin,
+		Stdout:         opts.IO.Stdout,
+		Stderr:         opts.IO.Stderr,
+		Terminal:       opts.IO.Terminal,
+		Checkpoint:     opts.Checkpoint.Annotations["Path"],
+		Options:        opts.TaskOptions,
+		Checkpointopts: opts.Checkpoint.Annotations,
 	}
 	for _, m := range opts.Rootfs {
 		sopts.Rootfs = append(sopts.Rootfs, &types.Mount{

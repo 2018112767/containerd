@@ -108,9 +108,11 @@ type PrepareSnapshotResponse struct {
 	Mounts []*containerd_types.Mount `protobuf:"bytes,1,rep,name=mounts" json:"mounts,omitempty"`
 }
 
-func (m *PrepareSnapshotResponse) Reset()                    { *m = PrepareSnapshotResponse{} }
-func (*PrepareSnapshotResponse) ProtoMessage()               {}
-func (*PrepareSnapshotResponse) Descriptor() ([]byte, []int) { return fileDescriptorSnapshots, []int{1} }
+func (m *PrepareSnapshotResponse) Reset()      { *m = PrepareSnapshotResponse{} }
+func (*PrepareSnapshotResponse) ProtoMessage() {}
+func (*PrepareSnapshotResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptorSnapshots, []int{1}
+}
 
 type ViewSnapshotRequest struct {
 	Snapshotter string `protobuf:"bytes,1,opt,name=snapshotter,proto3" json:"snapshotter,omitempty"`
@@ -229,9 +231,11 @@ type UpdateSnapshotResponse struct {
 	Info Info `protobuf:"bytes,1,opt,name=info" json:"info"`
 }
 
-func (m *UpdateSnapshotResponse) Reset()                    { *m = UpdateSnapshotResponse{} }
-func (*UpdateSnapshotResponse) ProtoMessage()               {}
-func (*UpdateSnapshotResponse) Descriptor() ([]byte, []int) { return fileDescriptorSnapshots, []int{12} }
+func (m *UpdateSnapshotResponse) Reset()      { *m = UpdateSnapshotResponse{} }
+func (*UpdateSnapshotResponse) ProtoMessage() {}
+func (*UpdateSnapshotResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptorSnapshots, []int{12}
+}
 
 type ListSnapshotsRequest struct {
 	Snapshotter string `protobuf:"bytes,1,opt,name=snapshotter,proto3" json:"snapshotter,omitempty"`

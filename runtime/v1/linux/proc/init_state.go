@@ -21,6 +21,8 @@ package proc
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"sync"
 	"syscall"
 
@@ -173,29 +175,27 @@ func (s *createdCheckpointState) Start(ctx context.Context) error {
 		defer socket.Close()
 		s.opts.ConsoleSocket = socket
 	}
-	/*
-			ft, err := os.Open("/etc/mylog1.log")
-			if err != nil {
-				panic(err)
-			}
-			defer ft.Close()
-			fContent, err := ioutil.ReadFile("/etc/mylog1.log")
-			if err != nil {
-				panic(err)
-			}
-			s.opts.ImagePath = string(fContent)
 
-		f, perr := os.Create("/etc/mylog2.log")
-		defer f.Close()
+	f, perr := os.Create("/etc/mylog2.log")
+	defer f.Close()
+	if perr != nil {
+		fmt.Println(perr.Error())
+	} else {
+		_, perr = f.WriteString(s.opts.ImagePath + "\n" + s.opts.ParentPath + "\n" + s.opts.WorkDir + "\n")
 		if perr != nil {
 			fmt.Println(perr.Error())
-		} else {
-			_, perr = f.WriteString(s.opts.ImagePath + "\n" + s.opts.ParentPath + "\n" + s.opts.WorkDir)
-			if perr != nil {
-				fmt.Println(perr.Error())
-			}
 		}
-	*/
+		if s.opts.LazyPages {
+			f.WriteString("lazy-pages" + "\n")
+		}
+		if s.opts.AllowOpenTCP {
+			f.WriteString("opentcp" + "\n")
+		}
+		if s.opts.AllowTerminal {
+			f.WriteString("terminal" + "\n")
+		}
+	}
+
 	s.opts.WorkDir = s.opts.ImagePath
 
 	if _, err := s.p.runtime.Restore(ctx, p.id, p.Bundle, s.opts); err != nil {

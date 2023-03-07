@@ -160,17 +160,21 @@ type ListContainersResponse struct {
 	Containers []Container `protobuf:"bytes,1,rep,name=containers" json:"containers"`
 }
 
-func (m *ListContainersResponse) Reset()                    { *m = ListContainersResponse{} }
-func (*ListContainersResponse) ProtoMessage()               {}
-func (*ListContainersResponse) Descriptor() ([]byte, []int) { return fileDescriptorContainers, []int{4} }
+func (m *ListContainersResponse) Reset()      { *m = ListContainersResponse{} }
+func (*ListContainersResponse) ProtoMessage() {}
+func (*ListContainersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptorContainers, []int{4}
+}
 
 type CreateContainerRequest struct {
 	Container Container `protobuf:"bytes,1,opt,name=container" json:"container"`
 }
 
-func (m *CreateContainerRequest) Reset()                    { *m = CreateContainerRequest{} }
-func (*CreateContainerRequest) ProtoMessage()               {}
-func (*CreateContainerRequest) Descriptor() ([]byte, []int) { return fileDescriptorContainers, []int{5} }
+func (m *CreateContainerRequest) Reset()      { *m = CreateContainerRequest{} }
+func (*CreateContainerRequest) ProtoMessage() {}
+func (*CreateContainerRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptorContainers, []int{5}
+}
 
 type CreateContainerResponse struct {
 	Container Container `protobuf:"bytes,1,opt,name=container" json:"container"`
@@ -197,9 +201,11 @@ type UpdateContainerRequest struct {
 	UpdateMask *google_protobuf3.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
 }
 
-func (m *UpdateContainerRequest) Reset()                    { *m = UpdateContainerRequest{} }
-func (*UpdateContainerRequest) ProtoMessage()               {}
-func (*UpdateContainerRequest) Descriptor() ([]byte, []int) { return fileDescriptorContainers, []int{7} }
+func (m *UpdateContainerRequest) Reset()      { *m = UpdateContainerRequest{} }
+func (*UpdateContainerRequest) ProtoMessage() {}
+func (*UpdateContainerRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptorContainers, []int{7}
+}
 
 type UpdateContainerResponse struct {
 	Container Container `protobuf:"bytes,1,opt,name=container" json:"container"`
@@ -215,9 +221,11 @@ type DeleteContainerRequest struct {
 	ID string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *DeleteContainerRequest) Reset()                    { *m = DeleteContainerRequest{} }
-func (*DeleteContainerRequest) ProtoMessage()               {}
-func (*DeleteContainerRequest) Descriptor() ([]byte, []int) { return fileDescriptorContainers, []int{9} }
+func (m *DeleteContainerRequest) Reset()      { *m = DeleteContainerRequest{} }
+func (*DeleteContainerRequest) ProtoMessage() {}
+func (*DeleteContainerRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptorContainers, []int{9}
+}
 
 type ListContainerMessage struct {
 	Container *Container `protobuf:"bytes,1,opt,name=container" json:"container,omitempty"`

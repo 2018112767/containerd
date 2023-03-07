@@ -167,11 +167,13 @@ func (l *local) Create(ctx context.Context, r *api.CreateTaskRequest, _ ...grpc.
 			Stderr:   r.Stderr,
 			Terminal: r.Terminal,
 		},
-		Checkpoint:     checkpointPath,
+		Checkpoint:     *(r.Checkpoint),
 		Runtime:        container.Runtime.Name,
 		RuntimeOptions: container.Runtime.Options,
 		TaskOptions:    r.Options,
 	}
+	opts.Checkpoint.Annotations = make(map[string]string)
+	opts.Checkpoint.Annotations["Path"] = checkpointPath
 	for _, m := range r.Rootfs {
 		opts.Rootfs = append(opts.Rootfs, mount.Mount{
 			Type:    m.Type,

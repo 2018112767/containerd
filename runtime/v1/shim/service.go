@@ -138,6 +138,7 @@ func (s *Service) Create(ctx context.Context, r *shimapi.CreateTaskRequest) (_ *
 		Checkpoint:       r.Checkpoint,
 		ParentCheckpoint: r.ParentCheckpoint,
 		Options:          r.Options,
+		CheckpointOpts:   r.Checkpointopts,
 	}
 	rootfs := filepath.Join(r.Bundle, "rootfs")
 	defer func(rootfs string) {
@@ -456,8 +457,9 @@ func (s *Service) Checkpoint(ctx context.Context, r *shimapi.CheckpointTaskReque
 		AllowTerminal:            options.Terminal,
 		FileLocks:                options.FileLocks,
 		EmptyNamespaces:          options.EmptyNamespaces,
-		Parentpath:               options.ParentPath,
+		Parentpath:               options.ParenthPath,
 		WorkDir:                  options.WorkPath,
+		LazyPages:                options.Lazypages,
 	}); err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}

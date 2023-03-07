@@ -63,6 +63,7 @@ message CreateTaskRequest {
 	string checkpoint = 9;
 	string parent_checkpoint = 10;
 	google.protobuf.Any options = 11;
+	map<string, string> checkpointopts = 13;
 }
 
 message CreateTaskResponse {

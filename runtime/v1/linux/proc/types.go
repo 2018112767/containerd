@@ -41,6 +41,7 @@ type CreateConfig struct {
 	Checkpoint       string
 	ParentCheckpoint string
 	Options          *google_protobuf.Any
+	CheckpointOpts   map[string]string
 }
 
 // ExecConfig holds exec creation configuration
@@ -65,4 +66,5 @@ type CheckpointConfig struct {
 	FileLocks                bool
 	EmptyNamespaces          []string
 	Parentpath               string
+	LazyPages                bool
 }

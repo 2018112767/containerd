@@ -20,6 +20,7 @@ import (
 	"context"
 	"time"
 
+	containerd_types "github.com/containerd/containerd/api/types"
 	"github.com/containerd/containerd/mount"
 	"github.com/gogo/protobuf/types"
 )
@@ -41,7 +42,8 @@ type CreateOpts struct {
 	// IO for the container's main process
 	IO IO
 	// Checkpoint digest to restore container state
-	Checkpoint string
+	//Checkpoint string
+	Checkpoint containerd_types.Descriptor
 	// RuntimeOptions for the runtime
 	RuntimeOptions *types.Any
 	// TaskOptions received for the task

@@ -108,9 +108,11 @@ type CreateNamespaceResponse struct {
 	Namespace Namespace `protobuf:"bytes,1,opt,name=namespace" json:"namespace"`
 }
 
-func (m *CreateNamespaceResponse) Reset()                    { *m = CreateNamespaceResponse{} }
-func (*CreateNamespaceResponse) ProtoMessage()               {}
-func (*CreateNamespaceResponse) Descriptor() ([]byte, []int) { return fileDescriptorNamespace, []int{6} }
+func (m *CreateNamespaceResponse) Reset()      { *m = CreateNamespaceResponse{} }
+func (*CreateNamespaceResponse) ProtoMessage() {}
+func (*CreateNamespaceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptorNamespace, []int{6}
+}
 
 // UpdateNamespaceRequest updates the metadata for a namespace.
 //
@@ -139,9 +141,11 @@ type UpdateNamespaceResponse struct {
 	Namespace Namespace `protobuf:"bytes,1,opt,name=namespace" json:"namespace"`
 }
 
-func (m *UpdateNamespaceResponse) Reset()                    { *m = UpdateNamespaceResponse{} }
-func (*UpdateNamespaceResponse) ProtoMessage()               {}
-func (*UpdateNamespaceResponse) Descriptor() ([]byte, []int) { return fileDescriptorNamespace, []int{8} }
+func (m *UpdateNamespaceResponse) Reset()      { *m = UpdateNamespaceResponse{} }
+func (*UpdateNamespaceResponse) ProtoMessage() {}
+func (*UpdateNamespaceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptorNamespace, []int{8}
+}
 
 type DeleteNamespaceRequest struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`

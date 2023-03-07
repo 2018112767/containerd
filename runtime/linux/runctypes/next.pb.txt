@@ -164,6 +164,41 @@ file {
       type: TYPE_STRING
       json_name: "cgroupsMode"
     }
+    field {
+      name: "work_path"
+      number: 8
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "workPath"
+    }
+    field {
+      name: "image_path"
+      number: 9
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "imagePath"
+    }
+    field {
+      name: "predump"
+      number: 10
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "predump"
+    }
+    field {
+      name: "parenth_path"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "parenthPath"
+    }
+    field {
+      name: "lazypages"
+      number: 12
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "lazypages"
+    }
   }
   message_type {
     name: "ProcessDetails"
