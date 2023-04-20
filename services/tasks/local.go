@@ -140,6 +140,7 @@ func (l *local) Create(ctx context.Context, r *api.CreateTaskRequest, _ ...grpc.
 		if r.Checkpoint.MediaType != images.MediaTypeContainerd1Checkpoint {
 			return nil, fmt.Errorf("unsupported checkpoint type %q", r.Checkpoint.MediaType)
 		}
+		/*
 		reader, err := l.store.ReaderAt(ctx, ocispec.Descriptor{
 			MediaType:   r.Checkpoint.MediaType,
 			Digest:      r.Checkpoint.Digest,
@@ -154,6 +155,7 @@ func (l *local) Create(ctx context.Context, r *api.CreateTaskRequest, _ ...grpc.
 		if err != nil {
 			return nil, err
 		}
+		*/
 	}
 	container, err := l.getContainer(ctx, r.ContainerID)
 	if err != nil {
