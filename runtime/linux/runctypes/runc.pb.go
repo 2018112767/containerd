@@ -74,6 +74,11 @@ type CheckpointOptions struct {
 	FileLocks           bool     `protobuf:"varint,5,opt,name=file_locks,json=fileLocks,proto3" json:"file_locks,omitempty"`
 	EmptyNamespaces     []string `protobuf:"bytes,6,rep,name=empty_namespaces,json=emptyNamespaces" json:"empty_namespaces,omitempty"`
 	CgroupsMode         string   `protobuf:"bytes,7,opt,name=cgroups_mode,json=cgroupsMode,proto3" json:"cgroups_mode,omitempty"`
+	WorkPath             string   `protobuf:"bytes,8,opt,name=work_path,json=workPath,proto3" json:"work_path,omitempty"`
+	ImagePath            string   `protobuf:"bytes,9,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
+	Predump              bool     `protobuf:"varint,10,opt,name=predump,proto3" json:"predump,omitempty"`
+	ParentPath           string   `protobuf:"bytes,11,opt,name=parent_path,json=parentPath,proto3" json:"parent_path,omitempty"`
+	PageServer           string   `protobuf:"bytes,12,opt,name=page_server,json=pageServer,proto3" json:"page_server,omitempty"`
 }
 
 func (m *CheckpointOptions) Reset()                    { *m = CheckpointOptions{} }
@@ -341,6 +346,40 @@ func (m *CheckpointOptions) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintRunc(dAtA, i, uint64(len(m.CgroupsMode)))
 		i += copy(dAtA[i:], m.CgroupsMode)
 	}
+	if len(m.WorkPath) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintRunc(dAtA, i, uint64(len(m.WorkPath)))
+		i += copy(dAtA[i:], m.WorkPath)
+	}
+	if len(m.ImagePath) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintRunc(dAtA, i, uint64(len(m.ImagePath)))
+		i += copy(dAtA[i:], m.ImagePath)
+	}
+	if m.Predump {
+		dAtA[i] = 0x50
+		i++
+		if m.Predump {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if len(m.ParentPath) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintRunc(dAtA, i, uint64(len(m.ParentPath)))
+		i += copy(dAtA[i:], m.ParentPath)
+	}
+	if len(m.PageServer) > 0 {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintRunc(dAtA, i, uint64(len(m.PageServer)))
+		i += copy(dAtA[i:], m.PageServer)
+	}
 	return i, nil
 }
 
@@ -470,6 +509,25 @@ func (m *CheckpointOptions) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovRunc(uint64(l))
 	}
+	l = len(m.WorkPath)
+	if l > 0 {
+		n += 1 + l + sovRunc(uint64(l))
+	}
+	l = len(m.ImagePath)
+	if l > 0 {
+		n += 1 + l + sovRunc(uint64(l))
+	}
+	if m.Predump {
+		n += 2
+	}
+	l = len(m.ParentPath)
+	if l > 0 {
+		n += 1 + l + sovRunc(uint64(l))
+	}
+	l = len(m.PageServer)
+	if l > 0 {
+		n += 1 + l + sovRunc(uint64(l))
+	}
 	return n
 }
 
@@ -541,6 +599,11 @@ func (this *CheckpointOptions) String() string {
 		`FileLocks:` + fmt.Sprintf("%v", this.FileLocks) + `,`,
 		`EmptyNamespaces:` + fmt.Sprintf("%v", this.EmptyNamespaces) + `,`,
 		`CgroupsMode:` + fmt.Sprintf("%v", this.CgroupsMode) + `,`,
+		`WorkPath:` + fmt.Sprintf("%v", this.WorkPath) + `,`,
+		`ImagePath:` + fmt.Sprintf("%v", this.ImagePath) + `,`,
+		`Predump:` + fmt.Sprintf("%v", this.Predump) + `,`,
+		`ParentPath:` + fmt.Sprintf("%v", this.ParentPath) + `,`,
+		`PageServer:` + fmt.Sprintf("%v", this.PageServer) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -1202,6 +1265,155 @@ func (m *CheckpointOptions) Unmarshal(dAtA []byte) error {
 			}
 			m.CgroupsMode = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WorkPath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.WorkPath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ImagePath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ImagePath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Predump", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Predump = bool(v != 0)
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ParentPath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ParentPath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PageServer", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PageServer = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+
 		default:
 			iNdEx = preIndex
 			skippy, err := skipRunc(dAtA[iNdEx:])

@@ -57,9 +57,12 @@ type ExecConfig struct {
 type CheckpointConfig struct {
 	Path                     string
 	Exit                     bool
+	Predump                  bool
 	AllowOpenTCP             bool
 	AllowExternalUnixSockets bool
 	AllowTerminal            bool
 	FileLocks                bool
 	EmptyNamespaces          []string
+	Parentpath               string
+	PageServer               string
 }

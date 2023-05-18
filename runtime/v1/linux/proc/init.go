@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 /*
@@ -427,6 +428,9 @@ func (p *Init) checkpoint(ctx context.Context, r *CheckpointConfig) error {
 	if !r.Exit {
 		actions = append(actions, runc.LeaveRunning)
 	}
+	if r.Predump {
+		actions = append(actions, runc.PreDump)
+	}
 	work := filepath.Join(p.WorkDir, "criu-work")
 	defer os.RemoveAll(work)
 	if err := p.runtime.Checkpoint(ctx, p.id, &runc.CheckpointOpts{
@@ -437,6 +441,8 @@ func (p *Init) checkpoint(ctx context.Context, r *CheckpointConfig) error {
 		AllowTerminal:            r.AllowTerminal,
 		FileLocks:                r.FileLocks,
 		EmptyNamespaces:          r.EmptyNamespaces,
+		ParentPath:               r.Parentpath,
+		CriuPageServer:           r.PageServer,
 	}, actions...); err != nil {
 		dumpLog := filepath.Join(p.Bundle, "criu-dump.log")
 		if cerr := copyFile(dumpLog, filepath.Join(work, "dump.log")); cerr != nil {
