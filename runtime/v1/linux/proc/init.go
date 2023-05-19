@@ -442,6 +442,7 @@ func (p *Init) checkpoint(ctx context.Context, r *CheckpointConfig) error {
 		FileLocks:                r.FileLocks,
 		EmptyNamespaces:          r.EmptyNamespaces,
 		ParentPath:               r.Parentpath,
+		CriuPageServer:           r.PageServer,
 	}, actions...); err != nil {
 		dumpLog := filepath.Join(p.Bundle, "criu-dump.log")
 		if cerr := copyFile(dumpLog, filepath.Join(work, "dump.log")); cerr != nil {

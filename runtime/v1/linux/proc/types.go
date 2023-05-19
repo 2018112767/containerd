@@ -65,4 +65,5 @@ type CheckpointConfig struct {
 	FileLocks                bool
 	EmptyNamespaces          []string
 	Parentpath               string
+	PageServer               string
 }

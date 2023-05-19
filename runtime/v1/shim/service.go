@@ -458,6 +458,7 @@ func (s *Service) Checkpoint(ctx context.Context, r *shimapi.CheckpointTaskReque
 		EmptyNamespaces:          options.EmptyNamespaces,
 		Parentpath:               options.ParentPath,
 		WorkDir:                  options.WorkPath,
+		PageServer:               options.PageServer,
 	}); err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}
