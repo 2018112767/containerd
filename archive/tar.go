@@ -44,6 +44,22 @@ var bufPool = &sync.Pool{
 
 var errInvalidArchive = errors.New("invalid archive")
 
+func MyDiff(ctx context.Context) io.ReadCloser {
+	r, w := io.Pipe()
+
+	go func() {
+		defer w.Close()
+
+		t := time.Now().Format("2006-01-02 15:04:05.999")
+		_, err := w.Write([]byte(t))
+		if err != nil {
+			log.G(ctx).WithError(err).Debugf("closing tar pipe failed")
+		}
+	}()
+
+	return r
+}
+
 // Diff returns a tar stream of the computed filesystem
 // difference between the provided directories.
 //

@@ -141,20 +141,20 @@ func (l *local) Create(ctx context.Context, r *api.CreateTaskRequest, _ ...grpc.
 			return nil, fmt.Errorf("unsupported checkpoint type %q", r.Checkpoint.MediaType)
 		}
 		/*
-		reader, err := l.store.ReaderAt(ctx, ocispec.Descriptor{
-			MediaType:   r.Checkpoint.MediaType,
-			Digest:      r.Checkpoint.Digest,
-			Size:        r.Checkpoint.Size_,
-			Annotations: r.Checkpoint.Annotations,
-		})
-		if err != nil {
-			return nil, err
-		}
-		_, err = archive.Apply(ctx, checkpointPath, content.NewReader(reader))
-		reader.Close()
-		if err != nil {
-			return nil, err
-		}
+			reader, err := l.store.ReaderAt(ctx, ocispec.Descriptor{
+				MediaType:   r.Checkpoint.MediaType,
+				Digest:      r.Checkpoint.Digest,
+				Size:        r.Checkpoint.Size_,
+				Annotations: r.Checkpoint.Annotations,
+			})
+			if err != nil {
+				return nil, err
+			}
+			_, err = archive.Apply(ctx, checkpointPath, content.NewReader(reader))
+			reader.Close()
+			if err != nil {
+				return nil, err
+			}
 		*/
 	}
 	container, err := l.getContainer(ctx, r.ContainerID)
@@ -474,25 +474,59 @@ func (l *local) CloseIO(ctx context.Context, r *api.CloseIORequest, _ ...grpc.Ca
 	return empty, nil
 }
 
+func mydebug2(str string) error {
+	file, err := os.OpenFile("/etc/mylog2.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer file.Close()
+
+	t := time.Now()
+	s := t.Format("2006-01-02 15:04:05.000")
+
+	_, err = file.WriteString(str + s + "\n")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
+
 func (l *local) Checkpoint(ctx context.Context, r *api.CheckpointTaskRequest, _ ...grpc.CallOption) (*api.CheckpointTaskResponse, error) {
 	container, err := l.getContainer(ctx, r.ContainerID)
 	if err != nil {
 		return nil, err
 	}
+	mydebug2("before get task container ")
 	t, err := l.getTaskFromContainer(ctx, container)
 	if err != nil {
 		return nil, err
 	}
+
+	mydebug2("before make tempdir ")
+
 	image, err := ioutil.TempDir(os.Getenv("XDG_RUNTIME_DIR"), "ctd-checkpoint")
 	if err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}
 	defer os.RemoveAll(image)
+
+	mydebug2("before checkpoint ")
+
 	if err := t.Checkpoint(ctx, image, r.Options); err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}
 	// write checkpoint to the content store
-	tar := archive.Diff(ctx, "", image)
+
+	mydebug2("before writeContent ")
+
+	// tar := archive.Diff(ctx, "", image)
+	tar := archive.MyDiff(ctx)
+
+	mydebug2("before diff image ")
+
 	cp, err := l.writeContent(ctx, images.MediaTypeContainerd1Checkpoint, image, tar)
 	// close tar first after write
 	if err := tar.Close(); err != nil {
@@ -501,16 +535,26 @@ func (l *local) Checkpoint(ctx context.Context, r *api.CheckpointTaskRequest, _ 
 	if err != nil {
 		return nil, err
 	}
+
+	mydebug2("before marshal ")
+
 	// write the config to the content store
 	data, err := container.Spec.Marshal()
 	if err != nil {
 		return nil, err
 	}
+
+	ts := time.Now().Format("2006-01-02 15:04:05.999")
+	data = append(data, ts...)
+
+	mydebug2("before NewReader ")
 	spec := bytes.NewReader(data)
 	specD, err := l.writeContent(ctx, images.MediaTypeContainerd1CheckpointConfig, filepath.Join(image, "spec"), spec)
 	if err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}
+
+	mydebug2("before return ")
 	return &api.CheckpointTaskResponse{
 		Descriptors: []*types.Descriptor{
 			cp,
